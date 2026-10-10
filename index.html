@@ -1,144 +1,358 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="description" content="SóAchei — produtos curiosos, úteis e ofertas para você.">
+
   <title>SóAchei — Achou. Gostou. Comprou.</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header class="top">
-  <div class="header-main">
-    <a class="logo" href="#" aria-label="SóAchei início">
-      <span class="bag">🛍️</span>
-      <span>Só<span>Achei</span><small>Achou. Gostou. Comprou.</small></span>
-    </a>
+  <!-- CABEÇALHO -->
+  <header class="top">
 
-    <form id="searchForm" class="search">
-      <input id="search" placeholder="O que você está procurando?" autocomplete="off">
-      <button>⌕</button>
-    </form>
+    <div class="header-main">
 
-    <div class="head-actions">
-      <button class="link-btn" onclick="scrollToProducts()">Produtos</button>
-      <button class="cart-btn" onclick="toggleCart()">🛒 <b>Carrinho</b><i id="cartCount">0</i></button>
+      <a class="logo" href="#" aria-label="SóAchei início">
+        <span class="bag">🛍️</span>
+        <span>
+          Só<span>Achei</span>
+          <small>Achou. Gostou. Comprou.</small>
+        </span>
+      </a>
+
+      <form id="searchForm" class="search">
+        <input
+          id="search"
+          type="search"
+          placeholder="O que você está procurando?"
+          autocomplete="off"
+        >
+        <button type="submit">⌕</button>
+      </form>
+
+      <div class="head-actions">
+        <button class="link-btn" onclick="scrollToProducts()">
+          Produtos
+        </button>
+
+        <button class="cart-btn" onclick="toggleCart()">
+          🛒 <b>Carrinho</b>
+          <i id="cartCount">0</i>
+        </button>
+      </div>
+
     </div>
-  </div>
 
-  <nav>
-    <button onclick="filterProducts('Todos')">☰ Todas as categorias</button>
-    <button class="active" onclick="filterProducts('Todos')">Início</button>
-    <button onclick="filterProducts('Mais vendidos')">Mais vendidos</button>
-    <button onclick="filterProducts('Ofertas')">Ofertas</button>
-    <button onclick="filterProducts('Lançamentos')">Lançamentos</button>
-    <a href="#contato">Fale Conosco</a>
-  </nav>
-</header>
+    <nav>
+      <button onclick="filterProducts('Todos')">
+        ☰ Todas as categorias
+      </button>
 
-<section class="hero">
-  <div class="hero-copy">
-    <p class="eyebrow">ACHADINHOS DA SEMANA</p>
-    <h1>Ofertas que você não esperava <strong>encontrar.</strong></h1>
-    <p>Produtos curiosos, úteis e que facilitam seu dia.</p>
-    <button class="primary" onclick="scrollToProducts()">VER OFERTAS →</button>
-  </div>
+      <button class="active" onclick="filterProducts('Todos')">
+        Início
+      </button>
 
-  <div class="hero-art" aria-hidden="true">
-    <div class="orb o1"></div>
-    <div class="orb o2"></div>
-    <div class="orb o3"></div>
-    <div class="hero-card">✨<br><b>Achou!</b><br><small>Seu próximo produto favorito.</small></div>
-  </div>
-</section>
+      <button onclick="filterProducts('Mais vendidos')">
+        Mais vendidos
+      </button>
 
-<section class="categories">
-  <button onclick="filterProducts('Mais vendidos')">🔥<b>Mais vendidos</b></button>
-  <button onclick="filterProducts('Lançamentos')">⭐<b>Lançamentos</b></button>
-  <button onclick="filterProducts('Casa')">🏠<b>Casa e decoração</b></button>
-  <button onclick="filterProducts('Celular')">📱<b>Celulares e acessórios</b></button>
-  <button onclick="filterProducts('Games')">🎮<b>Games e entretenimento</b></button>
-  <button onclick="filterProducts('Ofertas')">🏷️<b>Ofertas</b></button>
-</section>
+      <button onclick="filterProducts('Ofertas')">
+        Ofertas
+      </button>
 
-<main id="produtos" class="container">
-  <div class="section-title">
-    <h2>🔥 Produtos em destaque</h2>
-    <button onclick="filterProducts('Todos')">Ver todos →</button>
-  </div>
-  <div id="products" class="grid"></div>
-</main>
+      <button onclick="filterProducts('Lançamentos')">
+        Lançamentos
+      </button>
 
-<section class="promo container">
-  <div>
-    <b>🏆 MAIS VENDIDOS</b>
-    <span>Os produtos que mais chamam atenção.</span>
-    <button onclick="filterProducts('Mais vendidos')">VER LISTA →</button>
-  </div>
+      <a href="#contato">Fale Conosco</a>
+    </nav>
 
-  <div class="yellow">
-    <b>🚚 FRETE GRÁTIS*</b>
-    <span>Consulte condições da oferta.</span>
-    <button onclick="filterProducts('Ofertas')">APROVEITE →</button>
-  </div>
+  </header>
 
-  <div>
-    <b>💬 DÚVIDAS?</b>
-    <span>Fale diretamente pelo WhatsApp.</span>
-    <button onclick="openWhatsApp()">CHAMAR AGORA →</button>
-  </div>
-</section>
 
-<section class="why container">
-  <h2>Por que comprar na SóAchei?</h2>
+  <!-- DESTAQUE PRINCIPAL -->
+  <section class="hero">
 
-  <div>
-    <article>🎁<b>Produtos selecionados</b><small>Achadinhos escolhidos para a loja.</small></article>
-    <article>🛡️<b>Compra segura</b><small>Atendimento antes e depois da compra.</small></article>
-    <article>🚚<b>Entrega</b><small>Prazo informado antes do fechamento.</small></article>
-    <article>💬<b>Suporte de verdade</b><small>Estamos aqui para ajudar.</small></article>
-  </div>
-</section>
+    <div class="hero-copy">
+      <p class="eyebrow">ACHADINHOS DA SEMANA</p>
 
-<!-- CONTATO -->
-<section id="contato" class="contact container">
-  <div>
-    <h2>Fale com a SóAchei</h2>
-    <p>Tem dúvida sobre produto, prazo ou pedido?</p>
-  </div>
+      <h1>
+        Ofertas que você não esperava
+        <strong>encontrar.</strong>
+      </h1>
 
-  <button class="whatsapp" onclick="openWhatsApp()">
-    💬 Falar no WhatsApp
-  </button>
-</section>
+      <p>
+        Produtos curiosos, úteis e que facilitam seu dia.
+      </p>
 
-<!-- BENEFÍCIOS ABAIXO DO CONTATO -->
-<section class="trust">
-  <div>
-    🚚 <b>Envio para todo o Brasil</b>
-    <small>Consulte o prazo</small>
-  </div>
+      <button class="primary" onclick="scrollToProducts()">
+        VER OFERTAS →
+      </button>
+    </div>
 
-  <div>
-    🛡️ <b>Compra segura</b>
-    <small>Seus dados protegidos</small>
-  </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+      <div class="orb o3"></div>
 
-  <div>
-    💬 <b>Suporte pelo WhatsApp</b>
-    <small>Tire suas dúvidas</small>
-  </div>
+      <div class="hero-card">
+        ✨<br>
+        <b>Achou!</b><br>
+        <small>Seu próximo produto favorito.</small>
+      </div>
+    </div>
 
-  <div>
-    💳 <b>Pagamento facilitado</b>
-    <small>Pix e cartão*</small>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="footer-grid">
+
+  <!-- CATEGORIAS -->
+  <section class="categories">
+
+    <button onclick="filterProducts('Mais vendidos')">
+      🔥 <b>Mais vendidos</b>
+    </button>
+
+    <button onclick="filterProducts('Lançamentos')">
+      ⭐ <b>Lançamentos</b>
+    </button>
+
+    <button onclick="filterProducts('Casa')">
+      🏠 <b>Casa e decoração</b>
+    </button>
+
+    <button onclick="filterProducts('Celular')">
+      📱 <b>Celulares e acessórios</b>
+    </button>
+
+    <button onclick="filterProducts('Games')">
+      🎮 <b>Games e entretenimento</b>
+    </button>
+
+    <button onclick="filterProducts('Ofertas')">
+      🏷️ <b>Ofertas</b>
+    </button>
+
+  </section>
+
+
+  <!-- PRODUTOS -->
+  <main id="produtos" class="container">
+
+    <div class="section-title">
+      <h2>🔥 Produtos em destaque</h2>
+
+      <button onclick="filterProducts('Todos')">
+        Ver todos →
+      </button>
+    </div>
+
+    <!-- O script.js coloca os produtos aqui -->
+    <div id="products" class="grid">
+      <p>Carregando produtos...</p>
+    </div>
+
+  </main>
+
+
+  <!-- ÁREA DE OFERTAS -->
+  <section class="promo container">
 
     <div>
-      <div class="logo">
-        <span class="bag">🛍️</
+      <b>🏆 MAIS VENDIDOS</b>
+      <span>Conheça nossos produtos em destaque.</span>
+
+      <button onclick="filterProducts('Mais vendidos')">
+        VER LISTA →
+      </button>
+    </div>
+
+    <div class="yellow">
+      <b>🏷️ OFERTAS</b>
+      <span>Confira os produtos disponíveis.</span>
+
+      <button onclick="filterProducts('Ofertas')">
+        APROVEITE →
+      </button>
+    </div>
+
+    <div>
+      <b>💬 DÚVIDAS?</b>
+      <span>Entre em contato pelo WhatsApp.</span>
+
+      <button onclick="openWhatsApp()">
+        CHAMAR AGORA →
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- POR QUE COMPRAR -->
+  <section class="why container">
+
+    <h2>Por que comprar na SóAchei?</h2>
+
+    <div>
+
+      <article>
+        🎁
+        <b>Produtos selecionados</b>
+        <small>Achadinhos escolhidos para a loja.</small>
+      </article>
+
+      <article>
+        🛡️
+        <b>Compra segura</b>
+        <small>Atendimento antes e depois da compra.</small>
+      </article>
+
+      <article>
+        🚚
+        <b>Entrega</b>
+        <small>Consulte o prazo antes de comprar.</small>
+      </article>
+
+      <article>
+        💬
+        <b>Suporte de verdade</b>
+        <small>Estamos aqui para ajudar.</small>
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- CONTATO -->
+  <section id="contato" class="contact container">
+
+    <div>
+      <h2>Fale com a SóAchei</h2>
+      <p>Tem dúvida sobre produto, prazo ou pedido?</p>
+    </div>
+
+    <button class="whatsapp" onclick="openWhatsApp()">
+      💬 Falar no WhatsApp
+    </button>
+
+  </section>
+
+
+  <!-- BENEFÍCIOS -->
+  <section class="trust">
+
+    <div>
+      🚚 <b>Envio para todo o Brasil</b>
+      <small>Consulte o prazo</small>
+    </div>
+
+    <div>
+      🛡️ <b>Compra segura</b>
+      <small>Seus dados protegidos</small>
+    </div>
+
+    <div>
+      💬 <b>Suporte pelo WhatsApp</b>
+      <small>Tire suas dúvidas</small>
+    </div>
+
+    <div>
+      💳 <b>Pagamento facilitado</b>
+      <small>Pix e cartão*</small>
+    </div>
+
+  </section>
+
+
+  <!-- RODAPÉ -->
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+        <div class="logo">
+          <span class="bag">🛍️</span>
+
+          <span>
+            Só<span>Achei</span>
+            <small>Achou. Gostou. Comprou.</small>
+          </span>
+        </div>
+
+        <p>
+          Produtos curiosos, úteis e ofertas para você.
+        </p>
+      </div>
+
+      <div>
+        <h3>Navegação</h3>
+        <p><a href="#produtos">Ver produtos</a></p>
+        <p><a href="#contato">Fale conosco</a></p>
+      </div>
+
+      <div>
+        <h3>Atendimento</h3>
+        <p>Precisa de ajuda com um produto?</p>
+
+        <button onclick="openWhatsApp()">
+          Falar no WhatsApp
+        </button>
+      </div>
+
+    </div>
+
+    <p class="copyright">
+      © <span id="year"></span> SóAchei.
+      Todos os direitos reservados.
+    </p>
+
+  </footer>
+
+
+  <!-- FUNDO DO CARRINHO -->
+  <div
+    id="overlay"
+    onclick="toggleCart()"
+  ></div>
+
+
+  <!-- CARRINHO -->
+  <aside id="cart">
+
+    <h2>🛒 Meu carrinho</h2>
+
+    <button onclick="toggleCart()">
+      ✖ Fechar
+    </button>
+
+    <div id="cartItems">
+      <p>Seu carrinho está vazio.</p>
+    </div>
+
+    <h3>
+      Total:
+      <span id="cartTotal">R$ 0,00</span>
+    </h3>
+
+    <button onclick="checkout()">
+      Finalizar pedido pelo WhatsApp
+    </button>
+
+  </aside>
+
+
+  <!-- MENSAGENS -->
+  <div id="toast"></div>
+
+
+  <!-- CÓDIGO DOS PRODUTOS -->
+  <script src="script.js"></script>
+
+</body>
+</html>
