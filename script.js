@@ -1,60 +1,42 @@
+
 const products = [
-  {
-    name: "Mini Aspirador Portátil",
-    price: 39.90,
-    category: "Mais vendidos",
-    emoji: "🧹"
-  },
-  {
-    name: "Suporte Magnético para Celular",
-    price: 29.90,
-    category: "Celular",
-    emoji: "📱"
-  },
-  {
-    name: "Luminária LED Criativa",
-    price: 49.90,
-    category: "Casa",
-    emoji: "💡"
-  },
-  {
-    name: "Acessório Gamer",
-    price: 59.90,
-    category: "Games",
-    emoji: "🎮"
-  },
-  {
-    name: "Organizador Multiuso",
-    price: 34.90,
-    category: "Ofertas",
-    emoji: "📦"
-  },
-  {
-    name: "Produto Surpresa SóAchei",
-    price: 44.90,
-    category: "Lançamentos",
-    emoji: "🎁"
-  }
+  {name:"Mini Aspirador Portátil",price:39.90,category:"Mais vendidos",emoji:"🧹"},
+  {name:"Suporte Magnético para Celular",price:29.90,category:"Celular",emoji:"📱"},
+  {name:"Luminária LED Criativa",price:49.90,category:"Casa",emoji:"💡"},
+  {name:"Acessório Gamer",price:59.90,category:"Games",emoji:"🎮"},
+  {name:"Organizador Multiuso",price:34.90,category:"Ofertas",emoji:"📦"},
+  {name:"Produto Surpresa SóAchei",price:44.90,category:"Lançamentos",emoji:"🎁"}
 ];
 
+// Troque pelo número real da loja, com código do país e DDD.
+const WHATSAPP = "5500000000000";
+const STORAGE_KEY = "soachei_carrinho";
+
 let cart = [];
+try {
+  cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (!Array.isArray(cart)) cart = [];
+} catch {
+  cart = [];
+}
 
-const productsBox = document.getElementById("products");
-const cartItems = document.getElementById("cartItems");
-const cartCount = document.getElementById("cartCount");
-const cartTotal = document.getElementById("cartTotal");
+const money = value => Number(value).toLocaleString("pt-BR", {
+  style: "currency",
+  currency: "BRL"
+});
 
-function money(value) {
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
+function saveCart() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
 }
 
 function renderProducts(list = products) {
-  productsBox.innerHTML = "";
+  const box = document.getElementById("products");
+  if (!box) return;
 
-  list.forEach((product, index) => {
+  box.innerHTML = "";
+
+  list.forEach(product => {
+    const index = products.indexOf(product);
     const card = document.createElement("article");
     card.className = "product";
 
@@ -67,85 +49,120 @@ function renderProducts(list = products) {
         <button class="add" onclick="addToCart(${index})">
           ADICIONAR AO CARRINHO
         </button>
-      </div>
-    `;
+      </div>`;
 
-    productsBox.appendChild(card);
+    box.appendChild(card);
   });
 }
 
 function filterProducts(category) {
-  if (category === "Todos") {
-    renderProducts(products);
-    return;
-  }
+  const list = category === "Todos"
+    ? products
+    : products.filter(p => p.category === category);
 
-  const filtered = products.filter(product =>
-    product.category === category
-  );
-
-  renderProducts(filtered);
+  renderProducts(list);
   scrollToProducts();
 }
 
 function scrollToProducts() {
-  document.getElementById("produtos").scrollIntoView({
+  document.getElementById("produtos")?.scrollIntoView({
     behavior: "smooth"
   });
 }
 
 function addToCart(index) {
-  cart.push(products[index]);
-  updateCart();
+  const product = products[index];
+  if (!product) return;
 
+  const item = cart.find(p => p.name === product.name);
+
+  if (item) {
+    item.quantity += 1;
+  } else {
+    cart.push({...product, quantity: 1});
+  }
+
+  saveCart();
+  updateCart();
   showToast("Produto adicionado ao carrinho!");
 }
 
 function updateCart() {
-  cartItems.innerHTML = "";
-
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<p>Seu carrinho está vazio.</p>";
+  const count = document.getElementById("cartCount");
+  if (count) {
+    count.textContent = cart.reduce((sum, p) => sum + p.quantity, 0);
   }
 
-  cart.forEach((product, index) => {
-    const item = document.createElement("div");
+  const box = document.getElementById("cartItems");
+  if (!box) return;
 
-    item.style.padding = "15px 0";
-    item.style.borderBottom = "1px solid #ddd";
+  box.innerHTML = "";
 
-    item.innerHTML = `
-      <b>${product.emoji} ${product.name}</b>
-      <div>${money(product.price)}</div>
-      <button onclick="removeFromCart(${index})">
-        Remover
-      </button>
-    `;
+  if (cart.length === 0) {
+    box.innerHTML = `
+      <div class="empty-cart">
+        <div style="font-size:50px">🛒</div>
+        <h3>Seu carrinho está vazio</h3>
+        <p>Encontre seu próximo achadinho!</p>
+        <a class="primary" href="index.html">Ver produtos</a>
+      </div>`;
+  } else {
+    cart.forEach((product, index) => {
+      const item = document.createElement("div");
+      item.className = "cart-row";
 
-    cartItems.appendChild(item);
-  });
+      item.innerHTML = `
+        <span class="cart-emoji">${product.emoji}</span>
+        <div class="cart-product">
+          <b>${product.name}</b>
+          <p>${money(product.price)} cada</p>
+          <p>Subtotal: ${money(product.price * product.quantity)}</p>
+        </div>
+        <div class="quantity">
+          <button onclick="changeQuantity(${index}, -1)" aria-label="Diminuir">−</button>
+          <b>${product.quantity}</b>
+          <button onclick="changeQuantity(${index}, 1)" aria-label="Aumentar">+</button>
+        </div>
+        <button class="remove-item" onclick="removeFromCart(${index})">Remover</button>`;
 
-  cartCount.textContent = cart.length;
+      box.appendChild(item);
+    });
+  }
 
-  const total = cart.reduce((sum, product) =>
-    sum + product.price, 0
+  const total = cart.reduce(
+    (sum, p) => sum + p.price * p.quantity, 0
   );
 
-  cartTotal.textContent = money(total);
+  const totalEl = document.getElementById("cartTotal");
+  if (totalEl) totalEl.textContent = money(total);
+
+  const subtotalEl = document.getElementById("cartSubtotal");
+  if (subtotalEl) subtotalEl.textContent = money(total);
+}
+
+function changeQuantity(index, amount) {
+  if (!cart[index]) return;
+
+  cart[index].quantity += amount;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart();
+  updateCart();
 }
 
 function removeFromCart(index) {
   cart.splice(index, 1);
+  saveCart();
   updateCart();
-}
-
-function toggleCart() {
-  document.getElementById("cart").classList.toggle("open");
-  document.getElementById("overlay").classList.toggle("show");
+  showToast("Produto removido.");
 }
 
 function showToast(message) {
   const toast = document.getElementById("toast");
+  if (!toast) return;
 
   toast.textContent = message;
   toast.style.display = "block";
@@ -156,13 +173,11 @@ function showToast(message) {
 }
 
 function openWhatsApp() {
-  const phone = "5500000000000";
-
   const message =
     "Olá! Vim pela SóAchei e gostaria de saber mais sobre os produtos.";
 
   window.open(
-    "https://wa.me/" + phone + "?text=" +
+    "https://wa.me/" + WHATSAPP + "?text=" +
     encodeURIComponent(message),
     "_blank"
   );
@@ -174,50 +189,49 @@ function checkout() {
     return;
   }
 
-  let message = "Olá! Quero fazer este pedido na SóAchei:%0A%0A";
-
-  cart.forEach(product => {
-    message +=
-      "- " + product.name +
-      " — " + money(product.price) +
-      "%0A";
-  });
-
-  const total = cart.reduce((sum, product) =>
-    sum + product.price, 0
+  const lines = cart.map(p =>
+    `- ${p.name} | ${p.quantity} x ${money(p.price)} = ${money(p.price * p.quantity)}`
   );
 
-  message += "%0ATotal: " + money(total);
+  const total = cart.reduce(
+    (sum, p) => sum + p.price * p.quantity, 0
+  );
 
-  const phone = "5500000000000";
+  const message = [
+    "Olá! Quero fazer este pedido na SóAchei:",
+    "",
+    ...lines,
+    "",
+    "Total dos produtos: " + money(total),
+    "Gostaria de confirmar o frete e o prazo de entrega."
+  ].join("\n");
 
   window.open(
-    "https://wa.me/" + phone + "?text=" + message,
+    "https://wa.me/" + WHATSAPP + "?text=" +
+    encodeURIComponent(message),
     "_blank"
   );
 }
 
-document.getElementById("searchForm").addEventListener(
-  "submit",
-  function(event) {
+const searchForm = document.getElementById("searchForm");
+
+if (searchForm) {
+  searchForm.addEventListener("submit", event => {
     event.preventDefault();
 
-    const term = document
-      .getElementById("search")
-      .value
-      .toLowerCase();
+    const term = document.getElementById("search").value
+      .toLowerCase().trim();
 
-    const result = products.filter(product =>
-      product.name.toLowerCase().includes(term)
-    );
+    renderProducts(products.filter(p =>
+      p.name.toLowerCase().includes(term)
+    ));
 
-    renderProducts(result);
     scrollToProducts();
-  }
-);
+  });
+}
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+const year = document.getElementById("year");
+if (year) year.textContent = new Date().getFullYear();
 
 renderProducts();
 updateCart();
