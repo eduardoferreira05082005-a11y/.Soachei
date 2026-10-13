@@ -5,16 +5,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SóAchei — produtos curiosos, úteis e ofertas para você.">
-  <meta name="theme-color" content="#111827">
   <title>SóAchei — Achou. Gostou. Comprou.</title>
   <link rel="stylesheet" href="Style.css">
+
+  <style>
+    .cart-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      background: #ffd400;
+      color: #111;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .cart-btn #cartCount {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 5px;
+      border-radius: 50%;
+      background: #111;
+      color: white;
+      font-size: 12px;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+  </style>
 </head>
 
 <body>
   <header class="container">
     <nav class="navbar">
-      <a href="#inicio" class="logo">🛍️ SóAchei</a>
-      <a href="#products" class="btn">Ver produtos</a>
+      <a href="index.html" class="logo">🛍️ SóAchei</a>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <a href="#products" class="btn">Ver produtos</a>
+        <a href="carrinho.html" class="cart-btn">
+          🛒 Carrinho <span id="cartCount">0</span>
+        </a>
+      </div>
     </nav>
   </header>
 
@@ -22,10 +63,7 @@
     <section class="hero container" id="inicio">
       <p class="eyebrow">✨ Seus próximos achadinhos estão aqui</p>
       <h1>Achou. Gostou. Comprou.</h1>
-      <p>
-        Produtos curiosos, criativos e ofertas escolhidas
-        para facilitar o seu dia a dia.
-      </p>
+      <p>Produtos curiosos, criativos e ofertas escolhidas para você.</p>
       <a href="#products" class="btn">Explorar produtos →</a>
     </section>
 
@@ -44,10 +82,7 @@
     <section class="container promo" id="ofertas">
       <p class="eyebrow">🎁 DESCOBERTAS DA SEMANA</p>
       <h2>Tem sempre algo novo para descobrir!</h2>
-      <p>
-        Explore nossos achadinhos e encontre produtos
-        que combinam com você.
-      </p>
+      <p>Explore nossos achadinhos e encontre produtos que combinam com você.</p>
       <a href="#products" class="btn">Ver achadinhos</a>
     </section>
 
@@ -55,18 +90,13 @@
       <p class="eyebrow">ESTAMOS AQUI PARA AJUDAR</p>
       <h2>Fale com a SóAchei</h2>
       <p>Tem dúvida sobre produto, prazo ou pedido?</p>
-      <p>Entre em contato com a nossa equipe pelo WhatsApp.</p>
-      <a
-        href="https://wa.me/SEUNUMERO"
-        class="btn"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <p>Entre em contato com nossa equipe pelo WhatsApp.</p>
+      <a href="https://wa.me/5500000000000"
+         class="btn" target="_blank" rel="noopener noreferrer">
         💬 Falar no WhatsApp
       </a>
     </section>
 
-    <!-- Benefícios da loja -->
     <section class="container trust" id="beneficios">
       <div class="section-heading">
         <h2>Comprar com tranquilidade faz diferença</h2>
@@ -102,7 +132,7 @@
   </main>
 
   <footer class="container footer">
-    <a href="#inicio" class="logo">🛍️ SóAchei</a>
+    <a href="index.html" class="logo">🛍️ SóAchei</a>
     <p>Achou. Gostou. Comprou.</p>
     <p>© <span id="current-year">2026</span> SóAchei. Todos os direitos reservados.</p>
   </footer>
